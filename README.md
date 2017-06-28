@@ -1,6 +1,6 @@
 # toy-vue-serve-hey
 
-> A survey builder built with Vue.js View [demo](https://surgeon-allen-42534.netlify.com/).
+> A survey builder built with Vue.js. View [demo](https://surgeon-allen-42534.netlify.com/).
 
 ## Build Setup
 
