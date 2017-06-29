@@ -1,9 +1,11 @@
 <template>
-  <div v-if="notification.length" class="toast-notification">
-    <div class="item">
-      {{ notification }}
+  <transition name="fade">
+    <div v-if="notification.length" class="toast-notification">
+      <div class="item">
+        {{ notification }}
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -19,7 +21,7 @@
       notify(message) {
         clearTimeout(this.timeout);
         this.notification = message;
-        this.timeout = setTimeout(this.remove, 10000);
+        this.timeout = setTimeout(this.remove, 1000);
       },
 
       remove() {
@@ -54,25 +56,28 @@
   margin-bottom: 16px;
 }
 
-.toast-notification > .item.-enter {
+.fade-enter {
   opacity: 0;
   transform: translateY(20px);
 }
 
-.toast-notification > .item.-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: 0.3s all ease;
-}
-
-.toast-notification > .item.-leave {
+.fade-enter-to {
   opacity: 1;
   transform: translateY(0);
 }
 
-.toast-notification > .item.-leave-active {
+.fade-leave {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-leave-to {
   opacity: 0;
   transform: translateY(-20px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
   transition: 0.3s all ease;
 }
 </style>

@@ -119,7 +119,7 @@ export default {
     },
 
     publish() {
-      this.$refs.toast.notify('An error occured trying to process your request.');
+      this.$refs.toast.notify(`Grats! This doesn't actually do anything.`);
     }
   },
   components: {
