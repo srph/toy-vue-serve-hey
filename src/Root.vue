@@ -9,7 +9,7 @@
       </div>
 
       <div class="title">
-        <heading-input v-model="title" placeholder="Enter survey name..." class="heading-input"></heading-input>
+        <heading-input v-model="title" v-validate="'required'" data-vv-value-path="value" data-vv-name="title" :error="errors.has('title')" placeholder="Enter survey name..."></heading-input>
       </div>
 
       <div class="actions">

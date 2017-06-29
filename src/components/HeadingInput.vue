@@ -2,16 +2,16 @@
   <textarea
     v-bind="$props"
     v-if="type === 'textarea'"
-    :value="value"
     v-autosize
-    class="heading-input"
+    :value="value"
+    :class="{ 'heading-input': true, '-danger': error }"
     @input="input"
     @change="change"></textarea>
   <input
     v-bind="$props"
     v-else
     :value="value"
-    class="heading-input"
+    :class="{ 'heading-input': true, '-danger': error }"
     @input="input"
     @change="change"></input>
 </template>
@@ -24,14 +24,17 @@
         type: String,
         default: 'text'
       },
-      value: null
+      value: null,
+      error: Boolean
     },
     methods: {
       change(evt) {
+        console.log('change', evt.target.value);
         this.$emit('change', evt.target.value);
       },
 
       input(evt) {
+        console.log('input', evt.target.value);
         this.$emit('input', evt.target.value);
       }
     }
@@ -56,5 +59,10 @@
 .heading-input:focus {
   transition: 200ms border ease;
   border-color: var(--color-gray-light);
+}
+
+.heading-input.-danger:hover,
+.heading-input.-danger:focus {
+  border-color: red;
 }
 </style>

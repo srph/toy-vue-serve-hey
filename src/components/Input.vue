@@ -1,6 +1,7 @@
 <template>
   <input v-bind="$props"
     :value="value"
+    :class="{ '-danger': error }"
     @input="input"
     @change="change">
 </template>
@@ -9,7 +10,8 @@
   export default {
     name: 'ui-input',
     props: {
-      value: null
+      value: null,
+      error: Boolean
     },
     methods: {
       change(evt) {
@@ -24,8 +26,7 @@
 </script>
 
 <style scoped>
-  input,
-  select {
+  input {
     display: block;
     padding: 0 calc(var(--form-size) / 4);
     width: 100%;
@@ -35,8 +36,11 @@
     border-radius: var(--border-radius);
   }
 
-  input:focus,
-  select:focus {
+  input:focus {
     outline: 0;
+  }
+
+  input.-danger {
+    border-color: red;
   }
 </style>

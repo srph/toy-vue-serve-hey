@@ -10,7 +10,7 @@
       </div>
 
       <div class="title">
-        <heading-input type="textarea" :value="question.title" @change="update($event)" placeholder="Enter question title (e.g., what did you like about brand X)..." class="heading-input"></heading-input>
+        <heading-input type="textarea" :value="question.title" :rules="'required'" @change="update($event)" placeholder="Enter question title (e.g., what did you like about brand X)..." v-validate="'required'" data-vv-value-path="value" data-vv-name="title" :error="errors.has('title')" ></heading-input>
       </div>
 
       <span class="typetitle">Question Type:</span>
@@ -30,7 +30,8 @@
     <div class="body" v-if="question.choices">
       <h5 class="heading">Answers</h5>
       <div v-for="(choice, cindex) in question.choices" class="choice-item">
-        <ui-input :value="choice.title" @change="upchoice($event, cindex)" placeholder="Enter choice (e.g., Ariel)"></ui-input>
+        <!-- We're going for @input here because @change isn't working very well -->
+        <ui-input :value="choice.title" @input="upchoice($event, cindex)" placeholder="Enter choice (e.g., Ariel)" v-validate="'required'" data-vv-value-path="value" :data-vv-name="`title-${cindex}`" :error="errors.has(`title-${cindex}`)" ></ui-input>
         <ui-button type="button" @click.native="rmchoice(index, cindex)" title="Remove answer" size="small">
           ×
         </ui-button>
@@ -68,8 +69,9 @@
         this.$emit('new-choice', this.index)
       },
 
-      upchoice(evt, cindex) {
-        this.$emit('update-choice', this.index, cindex, evt.target.value);
+      upchoice(value, cindex) {
+        console.log(value);
+        this.$emit('update-choice', this.index, cindex, value);
       },
 
       rmchoice(cindex) {

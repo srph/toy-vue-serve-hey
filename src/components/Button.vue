@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'button',
+  name: 'ui-button',
   props: {
     // ['small']
     size: String,
