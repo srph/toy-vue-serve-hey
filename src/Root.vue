@@ -17,7 +17,7 @@
           Cancel
         </ui-button>
 
-        <ui-button type="button" title="Publish survey">
+        <ui-button @click.native="publish" type="button" title="Publish survey" class="hint--left" :aria-label="!title ? 'Publishing will become available after you start filling out content.' : ''">
           Publish
         </ui-button>
       </div>  
@@ -45,6 +45,8 @@
         </ui-select>
       </div>
     </div>
+
+    <toast ref="toast"></toast>
   </div>
 </template>
 
@@ -54,6 +56,7 @@ import Input from './components/Input';
 import Select from './components/Select';
 import QuestionItem from './components/QuestionItem';
 import HeadingInput from './components/HeadingInput';
+import Toast from './components/Toast';
 
 export default {
   name: 'root',
@@ -113,6 +116,10 @@ export default {
 
     rmchoice(index, cindex) {
       this.questions[index].choices.splice(cindex, 1);
+    },
+
+    publish() {
+      this.$refs.toast.notify('An error occured trying to process your request.');
     }
   },
   components: {
@@ -120,7 +127,8 @@ export default {
     'ui-input': Input,
     'ui-select': Select,
     QuestionItem,
-    HeadingInput
+    HeadingInput,
+    Toast
   }
 }
 </script>

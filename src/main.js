@@ -7,7 +7,8 @@ Vue.config.debug = true;
 Vue.config.devtools = true;
 Vue.config.productionTip = false
 
-import normalize from 'normalize.css';
+import 'normalize.css';
+import 'hint.css';
 
 import Autosize from 'vue-autosize';
 Vue.use(Autosize);
