@@ -49,14 +49,14 @@
 </template>
 
 <script>
-import Button from './Button';
-import Input from './Input';
-import Select from './Select';
-import QuestionItem from './QuestionItem';
-import HeadingInput from './HeadingInput';
+import Button from './components/Button';
+import Input from './components/Input';
+import Select from './components/Select';
+import QuestionItem from './components/QuestionItem';
+import HeadingInput from './components/HeadingInput';
 
 export default {
-  name: 'hello',
+  name: 'root',
   data () {
     return {
       title: '',
