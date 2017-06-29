@@ -9,7 +9,7 @@
       </div>
 
       <div class="title">
-        <input type="text" placeholder="Enter survey name..." class="heading-input"></input>
+        <heading-input v-model="title" placeholder="Enter survey name..." class="heading-input"></heading-input>
       </div>
 
       <div class="actions">
@@ -24,48 +24,19 @@
     </div>
 
     <div class="main-box">
-      <div class="question-item" v-for="(question, index) in questions">
-        <div class="heading">
-          <div class="count">{{ index + 1 }}</div>
-
-          <div class="action -remove">
-            <ui-button type="button" @click.native="remove(index)" title="Remove question" size="small">
-              ×
-            </ui-button>
-          </div>
-
-          <div class="title">
-            <textarea v-model="question.title" placeholder="Enter question title (e.g., what did you like about brand X)..." class="heading-input" v-autosize></textarea>
-          </div>
-
-          <span class="typetitle">Question Type:</span>
-          <span class="typeinfo">{{ question.name }}</span>
-
-          <div class="action -dir">
-            <ui-button type="button" @click.native="move('up', index)" size="small" v-if="index > 0" title="Move question up">
-              <icon name="angle-up"></icon>
-            </ui-button>
-
-            <ui-button type="button" @click.native="move('down', index)" size="small" v-if="index < questions.length - 1" title="Move question down">
-              <icon name="angle-down"></icon>
-            </ui-button>
-          </div>
-        </div>
-
-        <div class="body" v-if="question.choices">
-          <h5 class="heading">Answers</h5>
-          <div v-for="(choice, cindex) in question.choices" class="choice-item">
-            <ui-input v-model="choice.title" placeholder="Enter choice (e.g., Ariel)"></ui-input>
-            <ui-button type="button" @click.native="rmchoice(index, cindex)" title="Remove answer" size="small">
-              ×
-            </ui-button>
-          </div>
-          
-          <button type="button" @click="choice(index)" class="choice-placeholder" v-if="question.choices.length < 6">
-            Add a new answer
-          </button>
-        </div>
-      </div>
+      <question-item
+        v-for="(question, index) in questions"
+        :key="index"
+        :questions="questions"
+        :question="question"
+        :index="index"
+        @move="move"
+        @update="update"
+        @remove="remove"
+        @new-choice="choice"
+        @update-choice="upchoice"
+        @remove-choice="rmchoice">
+      </question-item>
 
       <div class="action-central">
         <ui-select value="-1" @change="add">
@@ -81,11 +52,14 @@
 import Button from './Button';
 import Input from './Input';
 import Select from './Select';
+import QuestionItem from './QuestionItem';
+import HeadingInput from './HeadingInput';
 
 export default {
   name: 'hello',
   data () {
     return {
+      title: '',
       questions: [],
       types: [{ 
         type: 'rate',
@@ -112,12 +86,16 @@ export default {
     add (type) {
       this.questions.push({ ...this.types[type] });
     },
+
+    update(index, value) {
+      this.questions[index].title = value;
+    },
     
     remove(index) {
       this.questions.splice(index, 1);
     },
 
-    move(dir, index) {
+    move(index, dir) {
       const next = dir === 'up'
         ? Math.max(0, index - 1)
         : Math.min(this.questions.length - 1, index + 1);
@@ -129,6 +107,10 @@ export default {
       this.questions[index].choices.push({ title: '' });
     },
 
+    upchoice(qindex, cindex, value) {
+      this.questions[qindex].choices[cindex].title = value;
+    },
+
     rmchoice(index, cindex) {
       this.questions[index].choices.splice(cindex, 1);
     }
@@ -137,6 +119,8 @@ export default {
     'ui-button': Button,
     'ui-input': Input,
     'ui-select': Select,
+    QuestionItem,
+    HeadingInput
   }
 }
 </script>
@@ -182,110 +166,6 @@ export default {
   padding-bottom: 320px;
   width: 240px;
   margin: 0 auto;
-}
-
-.question-item {
-  margin-bottom: 32px;
-  background: var(--color-white);
-  box-shadow: 0 0 2px rgba(0,0,0,0.2);
-}
-
-.question-item > .heading {
-  position: relative;
-  padding: 24px;
-}
-
-.question-item > .heading > .title {
-  margin-bottom: 16px;
-}
-
-.question-item > .heading > .typetitle {
-  color: var(--color-gray-light);
-}
-
-.question-item > .heading > .typeinfo {
-  color: var(--color-gray);
-}
-
-.question-item > .heading > .count {
-  position: absolute;
-  top: 0;
-  left: -160px;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-white);
-  background: #6fa4cf;
-}
-
-.question-item > .heading > .action {
-  position: absolute;
-  top: 0;
-  opacity: 0;
-  transition: 100ms all ease;
-}
-
-.question-item:hover > .heading > .action {
-  opacity: 1;
-}
-
-.question-item > .heading > .action.-remove {
-  left: -80px;
-}
-
-.question-item > .heading > .action.-dir {
-  left: calc(100% + 40px);
-  width: 120px;
-}
-
-.question-item > .body {
-  padding: 16px;
-  border-top: 1px solid var(--color-gray-light);
-}
-
-.question-item > .body > .heading {
-  text-transform: uppercase;
-  color: var(--color-gray);
-}
-
-.heading-input {
-  font-size: var(--font-size-h3);
-  display: block;
-  padding: calc(var(--form-size) / 4);
-  width: 100%;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: var(--border-radius);
-  outline: 0;
-  font-family: var(--font-family);
-  resize: none;
-}
-
-.heading-input:hover,
-.heading-input:focus {
-  transition: 200ms border ease;
-  border-color: var(--color-gray-light);
-}
-
-.choice-item {
-  display: flex;
-  margin-bottom: 8px;
-}
-
-.choice-item > input {
-  margin-right: 24px;
-}
-
-.choice-placeholder {
-  display: inline-block;
-  color: var(--color-gray);
-  padding: 0;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
 }
 
 .plain-button {

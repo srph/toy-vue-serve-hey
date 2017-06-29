@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import App from './App'
 
+Vue.config.debug = true;
+Vue.config.devtools = true;
 Vue.config.productionTip = false
 
 import normalize from 'normalize.css';
