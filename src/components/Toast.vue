@@ -21,7 +21,7 @@
       notify(message) {
         clearTimeout(this.timeout);
         this.notification = message;
-        this.timeout = setTimeout(this.remove, 1000);
+        this.timeout = setTimeout(this.remove, 5000);
       },
 
       remove() {
