@@ -10,7 +10,7 @@
       </div>
 
       <div class="title">
-        <heading-input type="textarea" :value="question.title" :rules="'required'" @change="update($event)" placeholder="Enter question title (e.g., what did you like about brand X)..." v-validate="'required'" data-vv-value-path="value" data-vv-name="title" :error="errors.has('title')" ></heading-input>
+        <heading-input type="textarea" :value="question.title" :rules="'required'" @input="update($event)" placeholder="Enter question title (e.g., what did you like about brand X)..." v-validate="'required'" data-vv-value-path="value" data-vv-name="title" :error="errors.has('title')" ></heading-input>
       </div>
 
       <span class="typetitle">Question Type:</span>

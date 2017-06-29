@@ -29,12 +29,10 @@
     },
     methods: {
       change(evt) {
-        console.log('change', evt.target.value);
         this.$emit('change', evt.target.value);
       },
 
       input(evt) {
-        console.log('input', evt.target.value);
         this.$emit('input', evt.target.value);
       }
     }
